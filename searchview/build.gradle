@@ -1,13 +1,11 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.3.4'
-        // https://github.com/novoda/bintray-release
+        classpath 'com.android.tools.build:gradle:2.1.2'
     }
 }
 
@@ -23,7 +21,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 3
-        versionName "3.3.1"
+        versionName "3.3.3"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -44,15 +42,3 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 }
-
-publish {
-    userOrg = 'lapism'
-    groupId = 'com.lapism'
-    artifactId = 'searchview'
-    publishVersion = '3.3.1'
-    desc = 'SearchView Library'
-    website = 'https://github.com/lapism/SearchView'
-}
-
-// build first
-// gradlew clean build bintrayUpload -PbintrayUser=lapism -PbintrayKey=BINTRAY_KEY -PdryRun=false
