@@ -18,8 +18,14 @@ lint
 classes
 gen-external-apklibs
 
-#.gradle
+.gradle
 local.properties
+<<<<<<< HEAD
+#gradlew
+#gradlew.bat
+#gradle/
+=======
+>>>>>>> origin/tests
 build/
 
 #vi
