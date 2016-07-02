@@ -40,6 +40,7 @@ proguard.cfg
 proguard-project.txt
 
 #Other
+sample/
 .DS_Store
 Thumbs.db
 tmp
