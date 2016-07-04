@@ -63,7 +63,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
     private static Typeface mTextFont = Typeface.DEFAULT;
     private static int mTextStyle = Typeface.NORMAL;
 
-    private static CharSequence mUserQuery = " ";
+    private static CharSequence mUserQuery = "";
 
     private final Context mContext;
 
@@ -93,6 +93,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
     private boolean mShadow = true;
     private boolean mVoice = true;
     private boolean mIsSearchOpen = false;
+    private boolean mShouldClearOnClose;
+    private boolean mShouldClearOnOpen;
 
     private SavedState mSavedState;
     private CharSequence mOldQueryText;
@@ -341,6 +343,9 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
                 setElevation(attr.getDimensionPixelSize(R.styleable.SearchView_search_elevation, 0));
             }
 
+            mShouldClearOnClose = attr.getBoolean(R.styleable.SearchView_search_clear_on_close, true);
+            mShouldClearOnOpen = attr.getBoolean(R.styleable.SearchView_search_clear_on_open, true);
+
             attr.recycle();
         }
     }
@@ -436,7 +441,9 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
 
     @SuppressWarnings("unused")
     public void setNavigationIcon(Drawable drawable) {
-        if (mVersion != VERSION_TOOLBAR) {
+        if (drawable == null) {
+            mBackImageView.setVisibility(View.GONE);
+        } else if (mVersion != VERSION_TOOLBAR) {
             mBackImageView.setImageDrawable(drawable);
         }
     }
@@ -562,7 +569,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
                 }
             } else {
                 mCardView.setVisibility(View.VISIBLE);
-                if (mEditText.length() > 0) {
+                if (mShouldClearOnOpen && mEditText.length() > 0) {
                     mEditText.getText().clear();
                 }
                 mEditText.requestFocus();
@@ -572,7 +579,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             }
         }
         if (mVersion == VERSION_TOOLBAR) {
-            if (mEditText.length() > 0) {
+            if (mShouldClearOnOpen && mEditText.length() > 0) {
                 mEditText.getText().clear();
             }
             mEditText.requestFocus();
@@ -592,7 +599,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
                     SearchAnimator.fadeClose(mCardView, mAnimationDuration, mEditText, this, mOnOpenCloseListener);
                 }
             } else {
-                if (mEditText.length() > 0) {
+                if (mShouldClearOnClose && mEditText.length() > 0) {
                     mEditText.getText().clear();
                 }
                 mEditText.clearFocus();
@@ -604,7 +611,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             }
         }
         if (mVersion == VERSION_TOOLBAR) {
-            if (mEditText.length() > 0) {
+            if (mShouldClearOnClose && mEditText.length() > 0) {
                 mEditText.getText().clear();
             }
             mEditText.clearFocus();
@@ -623,6 +630,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             SearchAnimator.fadeIn(mShadowView, mAnimationDuration);
         }
         showKeyboard();
+        showClearTextIcon();
         if (mVersion != VERSION_MENU_ITEM) {
             postDelayed(new Runnable() {
                 @Override
@@ -644,6 +652,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
         }
         hideSuggestions();
         hideKeyboard();
+        hideClearTextIcon();
         if (mVersion != VERSION_MENU_ITEM) {
             postDelayed(new Runnable() {
                 @Override
@@ -681,12 +690,10 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
         }
         mOldQueryText = newText.toString();
 
-        if (!TextUtils.isEmpty(newText)) { // TODO CROSS
-            mEmptyImageView.setVisibility(View.VISIBLE);
-            checkVoiceStatus(false);
+        if (!TextUtils.isEmpty(newText)) {
+            showClearTextIcon();
         } else {
-            mEmptyImageView.setVisibility(View.GONE);
-            checkVoiceStatus(true);
+            hideClearTextIcon();
         }
     }
 
@@ -746,6 +753,20 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             mSearchArrow.setVerticalMirror(true);
             mSearchArrow.animate(SearchArrowDrawable.STATE_HAMBURGER, mAnimationDuration);
             mIsSearchArrowHamburgerState = SearchArrowDrawable.STATE_HAMBURGER;
+        }
+    }
+
+    private void hideClearTextIcon() {
+        if (mUserQuery.length() == 0) {
+            mEmptyImageView.setVisibility(View.GONE);
+            checkVoiceStatus(true);
+        }
+    }
+
+    private void showClearTextIcon() {
+        if (mUserQuery.length() > 0) {
+            mEmptyImageView.setVisibility(View.VISIBLE);
+            checkVoiceStatus(false);
         }
     }
 
@@ -816,6 +837,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             if (mEditText.length() > 0) {
                 mEditText.getText().clear();
             }
+            setHint("");
         } else if (v == mShadowView) {
             close(true);
         }
