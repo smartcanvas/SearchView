@@ -165,6 +165,7 @@ class SearchAnimator {
                 Log.d(LOG_TAG, "fadeOpen() - onAnimationEnd() callback invoked.");
 
                 view.setVisibility(View.VISIBLE);
+                view.clearAnimation();
 
                 if (shouldClearOnOpen && editText.length() > 0) {
                     editText.getText().clear();
@@ -205,8 +206,12 @@ class SearchAnimator {
                 Log.d(LOG_TAG, "fadeClose() - onAnimationEnd() callback invoked.");
                 Log.d(LOG_TAG, String.format("fadeClose() - is OnOpenCloseListener set? %s", listener != null));
 
+                view.clearAnimation();
                 view.setVisibility(View.GONE);
+
                 searchView.setVisibility(View.GONE);
+
+
                 if (listener != null) {
                     listener.onClose();
                 }
