@@ -30,6 +30,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ import java.util.List;
 
 
 public class SearchView extends FrameLayout implements View.OnClickListener {
+    private static final String LOG_TAG = SearchView.class.getSimpleName();
 
     public static final int ANIMATION_DURATION = 300;
     public static final int VERSION_TOOLBAR = 1000;
@@ -623,6 +625,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
 
     @SuppressWarnings("WeakerAccess")
     public void addFocus() {
+        Log.d(LOG_TAG, "addFocus()");
+
         mIsSearchOpen = true;
         setArrow();
         showSuggestions();
@@ -635,6 +639,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(LOG_TAG, String.format("addFocus() - runnable - is mOnOpenCloseListener set? %s", mOnOpenCloseListener != null));
+
                     if (mOnOpenCloseListener != null) {
                         mOnOpenCloseListener.onOpen();
                     }
@@ -645,6 +651,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
 
     @SuppressWarnings("WeakerAccess")
     public void removeFocus() {
+        Log.d(LOG_TAG, "removeFocus()");
+
         mIsSearchOpen = false;
         setHamburger();
         if (mShadow) {
@@ -657,6 +665,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(LOG_TAG, String.format("removeFocus() - runnable - is mOnOpenCloseListener set? %s", mOnOpenCloseListener != null));
+
                     if (mOnOpenCloseListener != null) {
                         mOnOpenCloseListener.onClose();
                     }
