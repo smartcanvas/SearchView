@@ -145,7 +145,7 @@ class SearchAnimator {
         }
     }
 
-    static void fadeOpen(View view, int duration, final SearchEditText editText, final boolean shouldClearOnOpen, final SearchView.OnOpenCloseListener listener) {
+    static void fadeOpen(final View view, int duration, final SearchEditText editText, final boolean shouldClearOnOpen, final SearchView.OnOpenCloseListener listener) {
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.setDuration(duration);
@@ -164,6 +164,8 @@ class SearchAnimator {
             public void onAnimationEnd(Animation animation) {
                 Log.d(LOG_TAG, "fadeOpen() - onAnimationEnd() callback invoked.");
 
+                view.setVisibility(View.VISIBLE);
+
                 if (shouldClearOnOpen && editText.length() > 0) {
                     editText.getText().clear();
                 }
@@ -175,11 +177,12 @@ class SearchAnimator {
             }
         });
 
-        view.setAnimation(anim);
+//        view.setAnimation(anim);
         Log.d(LOG_TAG, "fadeOpen() - view.setAnimation() called");
 
-        view.setVisibility(View.VISIBLE);
+//        view.setVisibility(View.VISIBLE);
         Log.d(LOG_TAG, "fadeOpen() - view visibility set to VISIBLE");
+        view.startAnimation(anim);
     }
 
     static void fadeClose(final View view, int duration, final SearchEditText editText, final boolean shouldClearOnClose, final SearchView searchView, final SearchView.OnOpenCloseListener listener) {
@@ -214,10 +217,11 @@ class SearchAnimator {
             }
         });
 
-        view.setAnimation(anim);
+//        view.setAnimation(anim);
         Log.d(LOG_TAG, "fadeClose() - view.setAnimation() called");
 
-        view.setVisibility(View.GONE);
+//        view.setVisibility(View.GONE);
         Log.d(LOG_TAG, "fadeClose() - view visibility set to GONE");
+        view.startAnimation(anim);
     }
 }
