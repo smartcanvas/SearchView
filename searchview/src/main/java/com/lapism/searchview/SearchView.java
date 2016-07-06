@@ -30,6 +30,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ import java.util.List;
 
 
 public class SearchView extends FrameLayout implements View.OnClickListener {
+    private static final String LOG_TAG = SearchView.class.getSimpleName();
 
     public static final int ANIMATION_DURATION = 300;
     public static final int VERSION_TOOLBAR = 1000;
@@ -565,7 +567,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     reveal();
                 } else {
-                    SearchAnimator.fadeOpen(mCardView, mAnimationDuration, mEditText, mOnOpenCloseListener);
+                    SearchAnimator.fadeOpen(mCardView, mAnimationDuration, mEditText, mShouldClearOnOpen, mOnOpenCloseListener);
                 }
             } else {
                 mCardView.setVisibility(View.VISIBLE);
@@ -594,9 +596,9 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
         if (mVersion == VERSION_MENU_ITEM) {
             if (animate) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    SearchAnimator.revealClose(mCardView, mAnimationDuration, mContext, mEditText, this, mOnOpenCloseListener);
+                    SearchAnimator.revealClose(mCardView, mAnimationDuration, mContext, mEditText, mShouldClearOnClose, this, mOnOpenCloseListener);
                 } else {
-                    SearchAnimator.fadeClose(mCardView, mAnimationDuration, mEditText, this, mOnOpenCloseListener);
+                    SearchAnimator.fadeClose(mCardView, mAnimationDuration, mEditText, mShouldClearOnClose, this, mOnOpenCloseListener);
                 }
             } else {
                 if (mShouldClearOnClose && mEditText.length() > 0) {
@@ -623,6 +625,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
 
     @SuppressWarnings("WeakerAccess")
     public void addFocus() {
+        Log.d(LOG_TAG, "addFocus()");
+
         mIsSearchOpen = true;
         setArrow();
         showSuggestions();
@@ -635,6 +639,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(LOG_TAG, String.format("addFocus() - runnable - is mOnOpenCloseListener set? %s", mOnOpenCloseListener != null));
+
                     if (mOnOpenCloseListener != null) {
                         mOnOpenCloseListener.onOpen();
                     }
@@ -645,6 +651,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
 
     @SuppressWarnings("WeakerAccess")
     public void removeFocus() {
+        Log.d(LOG_TAG, "removeFocus()");
+
         mIsSearchOpen = false;
         setHamburger();
         if (mShadow) {
@@ -657,6 +665,8 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(LOG_TAG, String.format("removeFocus() - runnable - is mOnOpenCloseListener set? %s", mOnOpenCloseListener != null));
+
                     if (mOnOpenCloseListener != null) {
                         mOnOpenCloseListener.onClose();
                     }
@@ -804,7 +814,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             @Override
             public void onGlobalLayout() {
                 mCardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                SearchAnimator.revealOpen(mCardView, mAnimationDuration, mContext, mEditText, mOnOpenCloseListener);
+                SearchAnimator.revealOpen(mCardView, mAnimationDuration, mContext, mEditText, mShouldClearOnOpen, mOnOpenCloseListener);
             }
         });
     }
