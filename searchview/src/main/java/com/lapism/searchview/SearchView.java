@@ -95,6 +95,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
     private boolean mShadow = true;
     private boolean mVoice = true;
     private boolean mIsSearchOpen = false;
+
     private boolean mShouldClearOnClose;
     private boolean mShouldClearOnOpen;
 
@@ -546,6 +547,26 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
         invalidate();
     }
 
+    @SuppressWarnings("unused")
+    public boolean shouldClearOnClose() {
+        return mShouldClearOnClose;
+    }
+
+    @SuppressWarnings("unused")
+    public void setShouldClearOnClose(boolean shouldClearOnClose) {
+        mShouldClearOnClose = shouldClearOnClose;
+    }
+
+    @SuppressWarnings("unused")
+    public boolean shouldClearOnOpen() {
+        return mShouldClearOnOpen;
+    }
+
+    @SuppressWarnings("unused")
+    public void setShouldClearOnOpen(boolean shouldClearOnOpen) {
+        mShouldClearOnOpen = shouldClearOnOpen;
+    }
+
     // ---------------------------------------------------------------------------------------------
     public void setAdapter(SearchAdapter adapter) {
         mSearchAdapter = adapter;
@@ -847,7 +868,6 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
             if (mEditText.length() > 0) {
                 mEditText.getText().clear();
             }
-            setHint("");
         } else if (v == mShadowView) {
             close(true);
         }
