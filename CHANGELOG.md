@@ -1,14 +1,25 @@
+**3.4**  
+Fixes:
+- fixed missing hint
+
+News:
+- SearchHistoryTable.setHistorySize(int historySize)
+- SearchView has 4 new methods: 
+  * getShouldClearOnOpen 
+  * setShouldClearOnOpen
+  * setShouldClearOnClose
+  * getShouldClearOnClose
+  
+  
 **3.3.3**  
-- Fix for issue #108 and #72
-  Added two style attributes to define whether search view should be cleaned upon open/close.
-  More here: https://github.com/lapism/SearchView/pull/111 and here: https://github.com/lapism/SearchView/pull/114 
+- Added two style attributes to define whether search view should be cleaned upon open/close
+- fixes
   
 **3.3.2**  
-- Fix for issue #72
-  More here: https://github.com/lapism/SearchView/pull/110
+- fixes
 
 **3.3.1**  
-- small fixes
+- fixes
 
 **3.3**  
 Fixes:
