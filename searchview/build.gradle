@@ -21,8 +21,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 338
-        versionName "3.3.8"
+        versionCode 3411
+        versionName "3.4.1.1"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -37,9 +37,21 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.android.support:cardview-v7:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:cardview-v7:24.1.1'
 
     testCompile 'junit:junit:4.12'
 }
+
+publish {
+    userOrg = 'lapism'
+    groupId = 'com.lapism'
+    artifactId = 'searchview'
+    publishVersion = '3.4'
+    desc = 'SearchView Library'
+    website = 'https://github.com/lapism/SearchView'
+}
+
+// build first
+// gradlew clean build bintrayUpload -PbintrayUser=lapism -PbintrayKey=BINTRAY_KEY -PdryRun=false
