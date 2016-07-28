@@ -43,15 +43,3 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 }
-
-publish {
-    userOrg = 'lapism'
-    groupId = 'com.lapism'
-    artifactId = 'searchview'
-    publishVersion = '3.4'
-    desc = 'SearchView Library'
-    website = 'https://github.com/lapism/SearchView'
-}
-
-// build first
-// gradlew clean build bintrayUpload -PbintrayUser=lapism -PbintrayKey=BINTRAY_KEY -PdryRun=false
