@@ -191,7 +191,7 @@ public class SearchView extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    private void setQueryWithoutSubmitting(CharSequence query) {
+    public void setQueryWithoutSubmitting(CharSequence query) {
         mEditText.setText(query);
         if (query != null) {
             mEditText.setSelection(mEditText.length());
